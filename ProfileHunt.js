@@ -58,28 +58,30 @@ class ProfileHunt {
         this.loading.style.display = "none";
         this.userAvatar.src = res.avatar_url;
         this.viewProfile.href = res.html_url;
+        this.gitHubId.innerHTML = `<i class="fas fa-id-badge"></i>${" "}GitHub: <a href="${
+            res.html_url
+        }" target="_blank">${res.login}</a>`;
+        this.followers.innerHTML = `<i class="fas fa-users"></i>${" "}Followers: ${
+            res.followers
+        }`;
+
         res.name === null
             ? (this.name.innerHTML = `<i class="fas fa-user"></i>${" "}Name: N/A`)
             : (this.name.innerHTML = `<i class="fas fa-user"></i>${" "}Name: ${
                   res.name
               }`);
 
-        this.gitHubId.innerHTML = `<i class="fas fa-id-badge"></i>${" "}GitHub: <a href="${
-            res.html_url
-        }" target="_blank">${res.login}</a>`;
         res.location === null
             ? (this.userLocation.innerHTML = `<i class="fas fa-map-marker-alt"></i>Location: ${" "}N/A`)
             : (this.userLocation.innerHTML = `<i class="fas fa-map-marker-alt"></i>${" "}Location: ${
                   res.location
               }`);
+
         res.bio === null
             ? (this.userBio.innerHTML = `<i class="fas fa-info-circle"></i>${" "}N/A`)
             : (this.userBio.innerHTML = `<i class="fas fa-info-circle"></i>${" "}${
                   res.bio
               }`);
-        this.followers.innerHTML = `<i class="fas fa-users"></i>${" "}Followers: ${
-            res.followers
-        }`;
     }
 
     async onRetrieveFollowers(url, res) {
