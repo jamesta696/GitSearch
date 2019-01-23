@@ -8,6 +8,7 @@ class ProfileHunt {
         );
     }
 
+    // Initializer
     onLoad(e) {
         this.loading = document.getElementById("loading");
         this.horizontalDivider = document.querySelector(".dropdown-divider");
@@ -21,7 +22,7 @@ class ProfileHunt {
         this.userCard = document.querySelector(".card");
         this.followContainer = document.getElementById("list");
         this.viewProfile = document.querySelector(".view-profile");
-        this.button = document
+        this.submitButton = document
             .querySelector(".btn")
             .addEventListener(
                 "click",
