@@ -36,6 +36,40 @@ body {
     background: #24292e;
 }
 
+#logo {
+    transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transform: scale(0.8);
+    -webkit-transform: scale(0.8);
+    -ms-transform: scale(0.8);
+    -moz-transform: scale(0.8);
+    -o-transform: scale(0.8);
+    font-size: 40px;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+#logo:hover {
+    transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transform: scale(0.8);
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+}
+
+#logo a {
+    color: #fff;
+    text-decoration: none;
+}
+
 #list {
     display: -ms-flexbox;
     display: -webkit-flex;
@@ -196,7 +230,7 @@ body {
     }
 }
 
-@media screen and (min-width: 768px) and (max-width: 1400px) {
+@media screen and (min-width: 768px) and (max-width: 1600px) {
     .card {
         max-width: 50%;
     }
