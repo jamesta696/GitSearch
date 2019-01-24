@@ -11,6 +11,7 @@ class ProfileHunt {
     // Initializer
     onLoad(e) {
         this.loading = document.getElementById("loading");
+        this.inputQuery = document.getElementById("inputQuery");
         this.horizontalDivider = document.querySelector(".dropdown-divider");
         this.followBanner = document.querySelector(".display-3");
         this.userAvatar = document.getElementById("avatar");
@@ -26,9 +27,21 @@ class ProfileHunt {
             .querySelector(".btn")
             .addEventListener(
                 "click",
-                e => this.getData(document.getElementById("inputQuery").value),
+                e => this.getData(this.inputQuery.value),
                 false
             );
+        document.addEventListener(
+            "keypress",
+            e => this.submitOnEnter(e),
+            false
+        );
+    }
+
+    submitOnEnter(e) {
+        const key = e.which || e.keyCode;
+        if (key === 13 && e.target === this.inputQuery) {
+            this.getData(this.inputQuery.value);
+        }
     }
 
     async getData(name) {
@@ -37,7 +50,6 @@ class ProfileHunt {
         this.followBanner.style.display = "block";
         this.followContainer.innerHTML = "";
         this.loading.style.display = "flex";
-        const inputQuery = document.getElementById("inputQuery");
 
         try {
             const response = await fetch(
@@ -52,7 +64,7 @@ class ProfileHunt {
             console.log(err);
         }
 
-        inputQuery.value = "";
+        this.inputQuery.value = "";
     }
 
     onRenderUserInfo(res) {

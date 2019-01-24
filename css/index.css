@@ -150,7 +150,8 @@ body {
 
 .footer-text {
     color: #fff;
-    font-size: 12px;
+    font-size: 13px;
+    font-family: "Roboto Condensed", sans-serif;
 }
 
 .footer-text a {
