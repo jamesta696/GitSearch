@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css?family=Raleway:400, 700");
+/* @import url("https://fonts.googleapis.com/css?family=Raleway:400, 700"); */
 
 .fig-element {
-    font-family: "Raleway", Arial, sans-serif;
+    font-family: "Oswald", sans-serif !important;
     border-radius: 5px;
     position: relative;
     display: inline-block;
@@ -83,7 +83,6 @@
 }
 .fig-element h3 {
     font-size: 15px;
-
     padding: 8px 15px;
     margin: 0;
     opacity: 0;
@@ -116,7 +115,6 @@
 .fig-element.hover:after {
     opacity: 1;
 }
-
 .fig-element:hover:before,
 .fig-element.hover:before {
     width: 50px;
@@ -134,7 +132,6 @@
     -moz-transform: translateY(0%);
     -o-transform: translateY(0%);
     transform: translateY(0%);
-
     opacity: 1;
 }
 @media screen and (min-width: 320px) and (max-width: 480px) {
