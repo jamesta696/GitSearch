@@ -32,7 +32,7 @@ body {
     -ms-flex-align: start;
     align-items: flex-start;
     min-height: 160px;
-    background: #1b1b1d;
+    background: #24292e;
 }
 
 #list {
@@ -113,12 +113,12 @@ body {
     border-radius: 5px;
     font-size: 2.5rem !important;
     color: #ffffffe6;
-    background: #1b1b1d;
+    background: #24292e;
 }
 
 #lab_social_icon_footer {
     padding: 40px 0;
-    background-color: #1b1b1d;
+    background-color: #24292e;
 }
 
 #lab_social_icon_footer a {
