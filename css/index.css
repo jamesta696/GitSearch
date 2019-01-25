@@ -9,9 +9,10 @@ body {
     text-align: center;
 }
 
-/* #avatar {
-    width: 150px;
-} */
+.alert {
+    font-family: "Roboto Condensed", sans-serif;
+    animation: 1s cubic-bezier(0.68, -0.55, 0.265, 1.75) 0s 1 errorBezier;
+}
 
 .top-banner {
     display: -ms-flexbox;
@@ -34,6 +35,43 @@ body {
     align-items: flex-start;
     min-height: 160px;
     background: #24292e;
+    animation: 1s cubic-bezier(0.68, -0.55, 0.265, 1.75) 0s 1 cubicBez;
+}
+
+.top-banner,
+.alert,
+.card,
+#lab_social_icon_footer {
+    /* -webkit-transition: all 2000ms cubic-bezier(0.68, 0, 0.265, 1); */
+    -webkit-transition: all 2000ms cubic-bezier(0.68, -0.55, 0.265, 1.75);
+    -moz-transition: all 2000ms cubic-bezier(0.68, -0.55, 0.265, 1.75);
+    -o-transition: all 2000ms cubic-bezier(0.68, -0.55, 0.265, 1.75);
+    transition: all 2000ms cubic-bezier(0.68, -0.55, 0.265, 1.75);
+    /* -webkit-transition-timing-function: cubic-bezier(0.68, 0, 0.265, 1); */
+    -webkit-transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.75);
+    -moz-transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.75);
+    -o-transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.75);
+    transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.75);
+}
+
+@keyframes errorBezier {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes cubicBez {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
 }
 
 #logo {
@@ -51,7 +89,6 @@ body {
     max-width: 300px;
     margin: 0 auto;
 }
-
 #logo:hover {
     transition: all 0.5s ease-in-out;
     -webkit-transition: all 0.5s ease-in-out;
@@ -64,12 +101,10 @@ body {
     -moz-transform: scale(1);
     -o-transform: scale(1);
 }
-
 #logo a {
     color: #fff;
     text-decoration: none;
 }
-
 #list {
     display: -ms-flexbox;
     display: -webkit-flex;
@@ -90,7 +125,6 @@ body {
     -ms-flex-align: start;
     align-items: flex-start;
 }
-
 .follower,
 .top-banner h1,
 .top-banner div {
@@ -104,7 +138,6 @@ body {
     -ms-flex-item-align: auto;
     align-self: auto;
 }
-
 .top-banner .input-group {
     margin: auto;
     min-width: 200px;
@@ -112,15 +145,12 @@ body {
     padding: 0 10px 0 10px;
     font-family: "Roboto Condensed", sans-serif;
 }
-
 .list-group-item {
     transition: all 0.3s ease-in-out;
 }
-
 .list-group-item:hover {
     border: 1px solid orangered;
 }
-
 *,
 *:after,
 *:before {
@@ -133,44 +163,39 @@ body {
     font-family: "Ubuntu", sans-serif;
     position: relative;
 }
-
 .card {
     margin: auto;
     max-width: 75%;
     -webkit-box-shadow: 7px 11px 19px -8px rgba(0, 0, 0, 0.39);
     box-shadow: 7px 11px 19px -8px rgba(0, 0, 0, 0.39);
+    animation: 1s cubic-bezier(0.68, -0.55, 0.265, 1.75) 0s 1 cubicBez;
 }
-
 .card-body {
     text-align: left;
     letter-spacing: 0.5px;
     font-family: "Roboto Condensed", sans-serif;
 }
-
 .display-3 {
     border-radius: 5px;
     font-size: 2.5rem !important;
     color: #ffffffe6;
     background: #24292e;
 }
-
 #lab_social_icon_footer {
     padding: 40px 0;
     background-color: #24292e;
+    animation: 1s cubic-bezier(0.68, -0.55, 0.265, 1.75) 0s 1 cubicBez;
 }
-
 #lab_social_icon_footer a {
     color: #fff;
     padding: 0 2px;
 }
-
 #lab_social_icon_footer .social:hover {
     transform: scale(1.1);
     -webkit-transform: scale(1.1);
     -moz-transform: scale(1.1);
     -o-transform: scale(1.1);
 }
-
 #lab_social_icon_footer .social {
     -webkit-transform: scale(0.8);
     transform: scale(0.8);
@@ -181,55 +206,33 @@ body {
     -moz-transition-duration: 0.5s;
     -o-transition-duration: 0.5s;
 }
-
 .footer-text {
     color: #fff;
     font-size: 13px;
     font-family: "Roboto Condensed", sans-serif;
 }
-
 .footer-text a {
     text-decoration: none;
     transition: all 0.3s ease;
 }
-
 .footer-text a:hover {
     transition: all 0.3s ease;
     text-decoration: none;
 }
 
-/* #lab_social_icon_footer .fa-github-square:hover {
-    color: #3b5998;
-}
-
-#lab_social_icon_footer .fa-linkedin:hover {
-    color: #4099ff;
-}
-
-#lab_social_icon_footer .fa-envelope-square:hover {
-    color: #d34836;
-}
-
-#lab_social_icon_footer .fa-phone-square:hover {
-    color: #f39c12;
-} */
-
 @media screen and (min-width: 320px) and (max-width: 480px) {
     .top-banner h1 {
         font-size: 30px;
     }
-
     .snip1572 {
         min-width: 120px;
         max-width: 130px;
     }
-
     .snip1572 h3 {
         font-size: 8px;
         padding: 8px 5px;
     }
 }
-
 @media screen and (min-width: 768px) and (max-width: 1600px) {
     .card {
         max-width: 50%;

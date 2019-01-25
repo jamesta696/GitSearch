@@ -10,6 +10,8 @@ class ProfileHunt {
 
     // Initializer
     onLoad(e) {
+        this.container = document.querySelector(".card-container");
+        this.alertMessage = document.querySelector(".alert");
         this.loading = document.getElementById("loading");
         this.inputQuery = document.getElementById("inputQuery");
         this.horizontalDivider = document.querySelector(".dropdown-divider");
@@ -20,16 +22,22 @@ class ProfileHunt {
         this.userLocation = document.getElementById("location");
         this.userBio = document.getElementById("bio");
         this.followers = document.getElementById("count");
+        this.userHireable = document.getElementById("for-hire");
         this.userCard = document.querySelector(".card");
-        this.followContainer = document.getElementById("list");
         this.viewProfile = document.querySelector(".view-profile");
         this.submitButton = document
             .querySelector(".btn")
+            .addEventListener("click", e => this.onValidateInputQuery(), false);
+        this.followContainer = document.getElementById("list");
+
+        this.figElementsList = document
+            .getElementById("list")
             .addEventListener(
                 "click",
-                e => this.getData(this.inputQuery.value),
+                e => this.onGetFollowerProfile(e),
                 false
             );
+
         document.addEventListener(
             "keypress",
             e => this.submitOnEnter(e),
@@ -37,20 +45,41 @@ class ProfileHunt {
         );
     }
 
-    submitOnEnter(e) {
-        const key = e.which || e.keyCode;
-        if (key === 13 && e.target === this.inputQuery) {
-            this.getData(this.inputQuery.value);
+    onValidateInputQuery() {
+        if (this.inputQuery.value === "") {
+            this.alertMessage.style.display = "block";
+            this.userCard.style.display = "none";
+            this.horizontalDivider.style.display = "none";
+            this.followBanner.style.display = "none";
+            this.followContainer.innerHTML = "";
+            return false;
+        } else {
+            this.alertMessage.style.display = "none";
+            this.getData(inputQuery.value);
+
+            this.inputQuery.value = "";
+            return true;
         }
     }
 
+    submitOnEnter(e) {
+        const key = e.which || e.keyCode;
+        key === 13 && e.target === this.inputQuery
+            ? this.onValidateInputQuery()
+            : null;
+    }
+
     async getData(name) {
+        this.userCard.parentNode.removeChild(this.userCard);
+        const newUserCard = document.createElement("div");
+        newUserCard.className = "card mt-4";
+        newUserCard === this.userCard;
+        this.container.appendChild(this.userCard);
         this.userCard.style.display = "flex";
         this.horizontalDivider.style.display = "flex";
         this.followBanner.style.display = "block";
         this.followContainer.innerHTML = "";
         this.loading.style.display = "flex";
-
         try {
             const response = await fetch(
                 "https://api.github.com/users/" + name
@@ -63,8 +92,6 @@ class ProfileHunt {
         } catch (err) {
             console.log(err);
         }
-
-        this.inputQuery.value = "";
     }
 
     onRenderUserInfo(res) {
@@ -77,6 +104,14 @@ class ProfileHunt {
         this.followers.innerHTML = `<i class="fas fa-users"></i>${" "}Followers: ${
             res.followers
         }`;
+
+        if (res.hireable === null) {
+            this.userHireable.innerHTML = `<i class="fas fa-file-signature"></i> Available For Hire: <strong>N/A</strong>`;
+        } else if (res.hireable === false) {
+            this.userHireable.innerHTML = `<i class="fas fa-file-signature"></i> Available For Hire: <strong>No</strong>`;
+        } else {
+            this.userHireable.innerHTML = `<i class="fas fa-file-signature"></i> Available For Hire: <strong>Yes</strong>`;
+        }
 
         res.name === null
             ? (this.name.innerHTML = `<i class="fas fa-user"></i>${" "}Name: N/A`)
@@ -111,9 +146,17 @@ class ProfileHunt {
 
     onListFollowers(followers) {
         followers.map(follower => {
-            let user = new Follower(follower);
+            const user = new Follower(follower);
             this.followContainer.appendChild(user.element);
-            return user;
         });
+    }
+
+    onGetFollowerProfile(e) {
+        e.preventDefault(e);
+        if (e.target.classList.contains("profile-link")) {
+            const name = e.target.getAttribute("data-user");
+            this.getData(name);
+            window.scrollTo(0, 0);
+        }
     }
 }

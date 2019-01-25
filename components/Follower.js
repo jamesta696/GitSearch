@@ -10,7 +10,9 @@ class Follower {
                     <figcaption>
                         <h3>${follower.login}</h3>
                     </figcaption>
-                    <a href="${follower.html_url}" target="_blank"></a>
+                    <a href="javascript:void(0);" class="profile-link" data-user="${
+                        follower.login
+                    }"></a>
                 </figure>
             `;
 

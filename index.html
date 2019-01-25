@@ -19,6 +19,12 @@
             integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
             crossorigin="anonymous"
         />
+        <script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+              crossorigin="anonymous">
+        </script>
+        <script src="index.js"></script>
         <script src="strings.js"></script>
         <script src="/components/Follower.js"></script>
         <script src="ProfileHunt.js"></script>
@@ -27,6 +33,7 @@
         </script>
     </head>
     <body>
+        <!-- TOP BANNER -->
         <div class="top-banner">
             <div style="text-align: center; width:100%">
                 <div class="mt-4" id="logo" style="color: #fff">
@@ -54,32 +61,46 @@
                 </div>
             </div>
         </div>
+        <!-- END OF TOP BANNER -->
+        
 
+        <!-- MAIN CONTAINER -->
         <div class="container">
+            <div class="alert alert-danger mt-4 mb-4" role="alert" style="display: none">
+                    <strong>Error:</strong> Please enter a Github ID!
+            </div>
             <img
                 src="loading.gif"
                 style="display: none; margin: auto"
                 id="loading"
             />
-            <div class="card mt-4" style="display: none">
-                <img id="avatar" src="" class="card-img-top" alt="" />
-                <div class="card-body">
-                    <!-- <h5 class="card-title">Card title</h5> -->
-                    <div id="name"></div>
-                    <div id="username"></div>
-                    <div id="location"></div>
-                    <div id="bio"></div>
-                    <div id="count"></div>
 
-                    <a
-                        href=""
-                        target="_blank"
-                        class="view-profile btn btn-primary btn-block mt-2"
-                    >
-                        View Profile
-                    </a>
+
+            <!-- CARD CONTAINER -->
+            <div class="card-container">
+                <div class="card mt-4" style="display: none">
+                    <img id="avatar" src="" class="card-img-top" alt="" />
+                    <div class="card-body">
+                        <div id="name"></div>
+                        <div id="username"></div>
+                        <div id="location"></div>
+                        <div id="bio"></div>
+                        <div id="count"></div>
+                        <div id="for-hire"></div>
+    
+                        <a
+                            href=""
+                            target="_blank"
+                            class="view-profile btn btn-primary btn-block mt-2"
+                        >
+                            View Profile
+                        </a>
+                    </div>
                 </div>
             </div>
+            <!-- END OF CARD CONTAINER -->
+
+
             <div class="dropdown-divider mt-4" style="display: none"></div>
             <div>
                 <h2 class="display-3 mt-4" style="display: none">
@@ -89,7 +110,10 @@
 
             <div id="list"></div>
         </div>
+        <!-- END OF MAIN CONTAINER -->
 
+
+        <!-- FOOTER -->
         <section id="lab_social_icon_footer">
             <div class="container">
                 <div class="text-center center-block">
@@ -118,5 +142,6 @@
                 </div>
             </div>
         </section>
+        <!-- END OF FOOTER -->
     </body>
 </html>
