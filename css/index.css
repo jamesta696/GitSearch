@@ -11,7 +11,7 @@ body {
 
 .alert {
     font-family: "Roboto Condensed", sans-serif;
-    animation: 1s cubic-bezier(0.68, -0.55, 0.265, 1.75) 0s 1 errorBezier;
+    animation: 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.75) 0s 1 errorBezier;
 }
 
 .top-banner {
@@ -105,6 +105,51 @@ body {
     color: #fff;
     text-decoration: none;
 }
+
+.org-container {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: flex-start;
+    -ms-flex-line-pack: start;
+    align-content: flex-start;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+
+#org-avatar-group {
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    align-self: auto;
+    display: inline-block;
+    margin-bottom: 8px;
+    padding: 0 2px 0 2px;
+}
+
+#org-avatar {
+    border-radius: 3px;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+}
+
 #list {
     display: -ms-flexbox;
     display: -webkit-flex;
@@ -190,13 +235,9 @@ body {
     color: #fff;
     padding: 0 2px;
 }
-#lab_social_icon_footer .social:hover {
-    transform: scale(1.1);
-    -webkit-transform: scale(1.1);
-    -moz-transform: scale(1.1);
-    -o-transform: scale(1.1);
-}
-#lab_social_icon_footer .social {
+
+#lab_social_icon_footer .social,
+#org-avatar-group {
     -webkit-transform: scale(0.8);
     transform: scale(0.8);
     -moz-transform: scale(0.8);
@@ -205,6 +246,13 @@ body {
     -webkit-transition-duration: 0.5s;
     -moz-transition-duration: 0.5s;
     -o-transition-duration: 0.5s;
+}
+#lab_social_icon_footer .social:hover,
+#org-avatar-group:hover {
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
 }
 .footer-text {
     color: #fff;

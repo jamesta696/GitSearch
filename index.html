@@ -26,6 +26,7 @@
         </script>
         <script src="index.js"></script>
         <script src="strings.js"></script>
+        <script src="/components/Organization.js"></script>
         <script src="/components/Follower.js"></script>
         <script src="ProfileHunt.js"></script>
         <script>
@@ -62,7 +63,7 @@
             </div>
         </div>
         <!-- END OF TOP BANNER -->
-        
+
 
         <!-- MAIN CONTAINER -->
         <div class="container">
@@ -87,7 +88,9 @@
                         <div id="bio"></div>
                         <div id="count"></div>
                         <div id="for-hire"></div>
-    
+                        <div class="border-top mt-2" style="padding-top: 2px;">Organizations</div>
+                        <div class="org-container mt-2"></div>
+
                         <a
                             href=""
                             target="_blank"
@@ -102,7 +105,7 @@
 
 
             <div class="dropdown-divider mt-4" style="display: none"></div>
-            <div>
+            <div id="">
                 <h2 class="display-3 mt-4" style="display: none">
                     <i class="fas fa-users"></i> Followers
                 </h2>

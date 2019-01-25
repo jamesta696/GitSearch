@@ -4,7 +4,7 @@ class Follower {
     }
 
     createElement(follower) {
-        var figure = `
+        const figure = `
                 <figure class="fig-element follower">
                     <img src="${follower.avatar_url}" alt="${follower.login}" />
                     <figcaption>

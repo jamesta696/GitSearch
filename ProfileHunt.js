@@ -28,6 +28,7 @@ class ProfileHunt {
         this.submitButton = document
             .querySelector(".btn")
             .addEventListener("click", e => this.onValidateInputQuery(), false);
+        this.organizationContainer = document.querySelector(".org-container");
         this.followContainer = document.getElementById("list");
 
         this.figElementsList = document
@@ -46,7 +47,7 @@ class ProfileHunt {
     }
 
     onValidateInputQuery() {
-        if (this.inputQuery.value === "") {
+        if (this.inputQuery.value == "") {
             this.alertMessage.style.display = "block";
             this.userCard.style.display = "none";
             this.horizontalDivider.style.display = "none";
@@ -56,9 +57,25 @@ class ProfileHunt {
         } else {
             this.alertMessage.style.display = "none";
             this.getData(inputQuery.value);
-
             this.inputQuery.value = "";
             return true;
+        }
+    }
+
+    onUserNotFound(response) {
+        if (response.status == 404) {
+            let notFound = `<div class="alert alert-danger mt-4 mb-4" role="alert" style="display: block">
+            <strong>Error:</strong> User Doesn't Exist! Please try again.
+    </div>`;
+            notFound = notFound.toHtmlElement();
+            this.container.appendChild(notFound);
+            this.userCard.style.display = "none";
+            this.followBanner.innerHTML = "";
+            this.horizontalDivider.style.display = "none";
+        } else if (response.status == 200) {
+            this.onValidateInputQuery();
+        } else {
+            return;
         }
     }
 
@@ -78,6 +95,7 @@ class ProfileHunt {
         this.userCard.style.display = "flex";
         this.horizontalDivider.style.display = "flex";
         this.followBanner.style.display = "block";
+        this.organizationContainer.innerHTML = "";
         this.followContainer.innerHTML = "";
         this.loading.style.display = "flex";
         try {
@@ -86,8 +104,11 @@ class ProfileHunt {
             );
             const res = await response.json().then(res => {
                 console.log(res);
+                console.log(response);
                 this.onRenderUserInfo(res);
                 this.onRetrieveFollowers(res.followers_url);
+                this.onGetOrganizations(res.organizations_url);
+                this.onUserNotFound(response);
             });
         } catch (err) {
             console.log(err);
@@ -136,12 +157,31 @@ class ProfileHunt {
         try {
             const response = await fetch(url);
             await response.json().then(followers => {
-                console.log(followers);
+                console.log("Followers: ", followers);
                 this.onListFollowers(followers);
             });
         } catch (err) {
             console.log(err);
         }
+    }
+
+    async onGetOrganizations(orgUrl) {
+        try {
+            const response = await fetch(orgUrl);
+            await response.json().then(organizations => {
+                console.log("Organizations: ", organizations);
+                this.onListOrganizations(organizations);
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    onListOrganizations(organizations) {
+        organizations.map(organization => {
+            const institution = new Organization(organization);
+            this.organizationContainer.appendChild(institution.element);
+        });
     }
 
     onListFollowers(followers) {
