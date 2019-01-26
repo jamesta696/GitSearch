@@ -11,7 +11,7 @@ class ProfileHunt {
     // Initializer
     onLoad(e) {
         this.container = document.querySelector(".card-container");
-        this.alertMessage = document.querySelector(".alert");
+        this.alertMessage = document.getElementById("id-error");
         this.loading = document.getElementById("loading");
         this.inputQuery = document.getElementById("inputQuery");
         this.horizontalDivider = document.querySelector(".dropdown-divider");
@@ -44,39 +44,11 @@ class ProfileHunt {
             e => this.submitOnEnter(e),
             false
         );
-    }
 
-    onValidateInputQuery() {
-        if (this.inputQuery.value == "") {
-            this.alertMessage.style.display = "block";
-            this.userCard.style.display = "none";
-            this.horizontalDivider.style.display = "none";
-            this.followBanner.style.display = "none";
-            this.followContainer.innerHTML = "";
-            return false;
-        } else {
-            this.alertMessage.style.display = "none";
-            this.getData(inputQuery.value);
-            this.inputQuery.value = "";
-            return true;
-        }
-    }
-
-    onUserNotFound(response) {
-        if (response.status == 404) {
-            let notFound = `<div class="alert alert-danger mt-4 mb-4" role="alert" style="display: block">
-            <strong>Error:</strong> User Doesn't Exist! Please try again.
-    </div>`;
-            notFound = notFound.toHtmlElement();
-            this.container.appendChild(notFound);
-            this.userCard.style.display = "none";
-            this.followBanner.innerHTML = "";
-            this.horizontalDivider.style.display = "none";
-        } else if (response.status == 200) {
-            this.onValidateInputQuery();
-        } else {
-            return;
-        }
+        this.notFound = `
+            <div id="not-found-error" class="alert alert-danger mt-4 mb-4" role="alert" style="display: block">
+                <strong>Error:</strong> User Doesn't Exist! Please try again.
+            </div>`;
     }
 
     submitOnEnter(e) {
@@ -86,17 +58,36 @@ class ProfileHunt {
             : null;
     }
 
-    async getData(name) {
-        this.userCard.parentNode.removeChild(this.userCard);
-        const newUserCard = document.createElement("div");
-        newUserCard.className = "card mt-4";
-        newUserCard === this.userCard;
-        this.container.appendChild(this.userCard);
+    onHideElements() {
+        this.loading.style.display = "none";
+        this.userCard.style.display = "none";
+        this.followBanner.style.display = "none";
+        this.horizontalDivider.style.display = "none";
+    }
+
+    onShowElements() {
         this.userCard.style.display = "flex";
-        this.horizontalDivider.style.display = "flex";
         this.followBanner.style.display = "block";
-        this.organizationContainer.innerHTML = "";
-        this.followContainer.innerHTML = "";
+        this.horizontalDivider.style.display = "flex";
+    }
+
+    // onUserNotFound(response) {
+    //     if (response.status == 404) {
+    //         this.notFound = this.notFound.toHtmlElement();
+    //         this.container.appendChild(this.notFound);
+    //     } else if (response.status == 200) {
+    //         this.onValidateInputQuery();
+    //     } else {
+    //         return;
+    //     }
+    // }
+
+    onUserNotFound() {
+        this.notFound = this.notFound.toHtmlElement();
+        this.container.appendChild(this.notFound);
+    }
+
+    async getData(name) {
         this.loading.style.display = "flex";
         try {
             const response = await fetch(
@@ -105,18 +96,51 @@ class ProfileHunt {
             const res = await response.json().then(res => {
                 console.log(res);
                 console.log(response);
-                this.onRenderUserInfo(res);
-                this.onRetrieveFollowers(res.followers_url);
-                this.onGetOrganizations(res.organizations_url);
-                this.onUserNotFound(response);
+                if (response.status == 200) {
+                    this.onCheckForUserNotFound();
+                    this.onClearContainers();
+                    this.onShowElements();
+                    this.onRenderUserInfo(res);
+                    this.onRetrieveFollowers(res.followers_url);
+                    this.onGetOrganizations(res.organizations_url);
+                }
+
+                if (response.status == 404) {
+                    this.onUserNotFound();
+                    this.onHideElements();
+                    this.onClearContainers();
+                }
             });
         } catch (err) {
             console.log(err);
         }
     }
 
+    onValidateInputQuery() {
+        if (this.inputQuery.value == "") {
+            this.onDisplayIdNotFoundError();
+            return false;
+        } else {
+            this.alertMessage.style.display = "none";
+            this.getData(inputQuery.value);
+            this.inputQuery.value = "";
+            return true;
+        }
+    }
+
+    onDisplayIdNotFoundError() {
+        this.alertMessage.style.display = "block";
+    }
+
     onRenderUserInfo(res) {
+        this.userCard.parentNode.removeChild(this.userCard);
+        const newUserCard = document.createElement("div");
+        newUserCard.className = "card mt-4";
+        newUserCard === this.userCard;
+        this.container.appendChild(this.userCard);
+        this.organizationContainer.innerHTML = "";
         this.loading.style.display = "none";
+
         this.userAvatar.src = res.avatar_url;
         this.viewProfile.href = res.html_url;
         this.gitHubId.innerHTML = `<i class="fas fa-id-badge"></i>${" "}GitHub: <a href="${
@@ -151,6 +175,19 @@ class ProfileHunt {
             : (this.userBio.innerHTML = `<i class="fas fa-info-circle"></i>${" "}${
                   res.bio
               }`);
+    }
+
+    onCheckForUserNotFound() {
+        if (document.contains(document.getElementById("not-found-error"))) {
+            document.getElementById("not-found-error").remove();
+        } else {
+            return;
+        }
+    }
+
+    onClearContainers() {
+        this.followContainer.innerHTML = "";
+        this.organizationContainer.innerHTML = "";
     }
 
     async onRetrieveFollowers(url, res) {
