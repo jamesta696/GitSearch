@@ -11,7 +11,7 @@ class ProfileHunt {
     // Initializer
     onLoad(e) {
         this.container = document.querySelector(".card-container");
-        this.alertMessage = document.getElementById("id-error");
+        this.gitHubNotFound = document.getElementById("id-error");
         this.loading = document.getElementById("loading");
         this.inputQuery = document.getElementById("inputQuery");
         this.horizontalDivider = document.querySelector(".dropdown-divider");
@@ -25,6 +25,7 @@ class ProfileHunt {
         this.userHireable = document.getElementById("for-hire");
         this.userCard = document.querySelector(".card");
         this.viewProfile = document.querySelector(".view-profile");
+        this.footer = document.getElementById("lab_social_icon_footer");
         this.submitButton = document
             .querySelector(".btn")
             .addEventListener("click", e => this.onValidateInputQuery(), false);
@@ -44,11 +45,14 @@ class ProfileHunt {
             e => this.submitOnEnter(e),
             false
         );
+    }
 
+    onCreateNotFoundElement() {
         this.notFound = `
             <div id="not-found-error" class="alert alert-danger mt-4 mb-4" role="alert" style="display: block">
                 <strong>Error:</strong> User Doesn't Exist! Please try again.
             </div>`;
+        return this.notFound.toHtmlElement();
     }
 
     submitOnEnter(e) {
@@ -71,20 +75,45 @@ class ProfileHunt {
         this.horizontalDivider.style.display = "flex";
     }
 
-    // onUserNotFound(response) {
-    //     if (response.status == 404) {
-    //         this.notFound = this.notFound.toHtmlElement();
-    //         this.container.appendChild(this.notFound);
-    //     } else if (response.status == 200) {
-    //         this.onValidateInputQuery();
-    //     } else {
-    //         return;
-    //     }
-    // }
+    onClearContainers() {
+        this.followContainer.innerHTML = "";
+        this.organizationContainer.innerHTML = "";
+    }
+
+    onResetScreen() {
+        this.onHideElements();
+        this.onClearContainers();
+        this.foundUser = false;
+        this.onToggleFooter();
+    }
+
+    onDisplaygitHubNotFoundError() {
+        this.gitHubNotFound.style.display = "block";
+    }
+
+    onToggleFooter() {
+        if (this.foundUser) {
+            this.footer.classList.add("visible");
+        } else {
+            this.footer.classList.remove("visible");
+        }
+    }
 
     onUserNotFound() {
-        this.notFound = this.notFound.toHtmlElement();
+        this.notFound = this.onCreateNotFoundElement();
         this.container.appendChild(this.notFound);
+        console.log(this.notFound);
+        console.log("User Not Found");
+        this.onToggleFooter();
+    }
+
+    onCheckForUserNotFound() {
+        if (this.notFound) {
+            this.notFound.remove();
+            console.log("User Not Found Error Removed");
+        } else {
+            return;
+        }
     }
 
     async getData(name) {
@@ -96,50 +125,59 @@ class ProfileHunt {
             const res = await response.json().then(res => {
                 console.log(res);
                 console.log(response);
-                if (response.status == 200) {
-                    this.onCheckForUserNotFound();
-                    this.onClearContainers();
-                    this.onShowElements();
-                    this.onRenderUserInfo(res);
-                    this.onRetrieveFollowers(res.followers_url);
-                    this.onGetOrganizations(res.organizations_url);
-                }
 
-                if (response.status == 404) {
-                    this.onUserNotFound();
-                    this.onHideElements();
-                    this.onClearContainers();
-                }
+                response.status == 200
+                    ? this.onRenderUserInfo(res)
+                    : response.status == 404
+                    ? (this.onResetScreen(), this.onUserNotFound())
+                    : response.status == 403
+                    ? (this.onResetScreen(),
+                      alert(
+                          "API rate limit exceeded!, Please try again later."
+                      ))
+                    : alert(`Unknown Error: ${response.statusText}`);
             });
         } catch (err) {
-            console.log(err);
+            console.log("Error: ", err);
         }
     }
 
     onValidateInputQuery() {
         if (this.inputQuery.value == "") {
-            this.onDisplayIdNotFoundError();
+            this.onDisplaygitHubNotFoundError();
             return false;
         } else {
-            this.alertMessage.style.display = "none";
+            this.gitHubNotFound.style.display = "none";
             this.getData(inputQuery.value);
             this.inputQuery.value = "";
             return true;
         }
     }
 
-    onDisplayIdNotFoundError() {
-        this.alertMessage.style.display = "block";
+    onClearGitHubNotFoundError() {
+        if (this.foundUser) {
+            this.gitHubNotFound.style.display = "none";
+        }
     }
 
     onRenderUserInfo(res) {
+        //------------------------------------------------------
+        this.foundUser = true;
+        this.onCheckForUserNotFound();
+        this.onClearGitHubNotFoundError();
+        this.onClearContainers();
+        this.onShowElements();
+        this.onToggleFooter();
+        this.onRetrieveFollowers(res.followers_url);
+
         this.userCard.parentNode.removeChild(this.userCard);
         const newUserCard = document.createElement("div");
         newUserCard.className = "card mt-4";
         newUserCard === this.userCard;
         this.container.appendChild(this.userCard);
-        this.organizationContainer.innerHTML = "";
         this.loading.style.display = "none";
+
+        //------------------------------------------------------
 
         this.userAvatar.src = res.avatar_url;
         this.viewProfile.href = res.html_url;
@@ -150,6 +188,8 @@ class ProfileHunt {
             res.followers
         }`;
 
+        //------------------------------------------------------
+
         if (res.hireable === null) {
             this.userHireable.innerHTML = `<i class="fas fa-file-signature"></i> Available For Hire: <strong>N/A</strong>`;
         } else if (res.hireable === false) {
@@ -157,6 +197,8 @@ class ProfileHunt {
         } else {
             this.userHireable.innerHTML = `<i class="fas fa-file-signature"></i> Available For Hire: <strong>Yes</strong>`;
         }
+
+        //------------------------------------------------------
 
         res.name === null
             ? (this.name.innerHTML = `<i class="fas fa-user"></i>${" "}Name: N/A`)
@@ -175,19 +217,10 @@ class ProfileHunt {
             : (this.userBio.innerHTML = `<i class="fas fa-info-circle"></i>${" "}${
                   res.bio
               }`);
-    }
 
-    onCheckForUserNotFound() {
-        if (document.contains(document.getElementById("not-found-error"))) {
-            document.getElementById("not-found-error").remove();
-        } else {
-            return;
-        }
-    }
+        //------------------------------------------------------
 
-    onClearContainers() {
-        this.followContainer.innerHTML = "";
-        this.organizationContainer.innerHTML = "";
+        this.onGetOrganizations(res.organizations_url);
     }
 
     async onRetrieveFollowers(url, res) {
@@ -200,6 +233,13 @@ class ProfileHunt {
         } catch (err) {
             console.log(err);
         }
+    }
+
+    onListFollowers(followers) {
+        followers.map(follower => {
+            const user = new Follower(follower);
+            this.followContainer.appendChild(user.element);
+        });
     }
 
     async onGetOrganizations(orgUrl) {
@@ -218,13 +258,6 @@ class ProfileHunt {
         organizations.map(organization => {
             const institution = new Organization(organization);
             this.organizationContainer.appendChild(institution.element);
-        });
-    }
-
-    onListFollowers(followers) {
-        followers.map(follower => {
-            const user = new Follower(follower);
-            this.followContainer.appendChild(user.element);
         });
     }
 

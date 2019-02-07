@@ -1,0 +1,7 @@
+# misc
+backup/
+/backup
+.vscode/
+/.vscode
+*.exe
+*.xml
